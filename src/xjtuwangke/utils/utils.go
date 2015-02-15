@@ -4,6 +4,21 @@ import (
 //"math"
 )
 
+func SliceXor(a, b []byte) []byte {
+	lenA := len(a)
+	lenB := len(b)
+	len := lenA
+	if lenB < lenA {
+		len = lenB
+	}
+	result := make([]byte, len)
+
+	for i := 0; i < len; i++ {
+		result[i] = a[i] ^ b[i]
+	}
+	return result
+}
+
 func ByteToHexString(stream []byte) string {
 	resultString := ""
 	mapHex := make(map[int]string)
