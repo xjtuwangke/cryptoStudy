@@ -15,14 +15,16 @@ const (
 )
 
 func RunCourseProjWeek4() {
-	iv := "f20bdba6ff29eed7b046d1df9fb70000"
+	//iv := "f20bdba6ff29eed7b046d1df9fb70000"
 	cipherText := []string{
 		"58b1ffb4210a580f748b4ac714c001bd",
 		"4a61044426fb515dad3f21f18aa577c0",
 		"bdf302936266926ff37dbf7035d5eeb4"}
 	plainText := ""
-	plainText += paddingOracleGuess(iv, cipherText[0])
-	plainText += paddingOracleGuess(cipherText[0], cipherText[1])
+	//plainText += paddingOracleGuess(iv, cipherText[0])
+	//fmt.Println(plainText)
+	//plainText += paddingOracleGuess(cipherText[0], cipherText[1])
+	//fmt.Println(plainText)
 	plainText += paddingOracleGuess(cipherText[1], cipherText[2])
 	fmt.Println(plainText)
 }
@@ -36,6 +38,7 @@ func paddingOracleGuess(iv string, block string) string {
 	blockByteFlow := utils.HexStringToByte(block)
 	results := []byte{}
 	for i := 0; i < cbcBlockSize; i++ {
+		fmt.Printf("\n")
 		padding := paddingMask(cbcBlockSize, i+1)
 		for g := 0; g < 256; g++ {
 			guess := append(bytes.Repeat([]byte{byte(0)}, cbcBlockSize-i-1), append([]byte{byte(g)}, results...)...)
@@ -46,9 +49,10 @@ func paddingOracleGuess(iv string, block string) string {
 			//fmt.Println(utils.ByteToHexString(padding))
 			//fmt.Println(utils.ByteToHexString(iv))
 			isHit := paddingOracleTry(append(iv, blockByteFlow...))
+			fmt.Printf(".")
 			if isHit {
 				results = append([]byte{byte(g)}, results...)
-				fmt.Printf("i=%d,g=%d", i, g)
+				fmt.Printf("\ni=%d,g=%d\n", i, g)
 				break
 			}
 		}
